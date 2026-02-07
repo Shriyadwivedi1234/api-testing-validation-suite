@@ -171,7 +171,7 @@ Import `postman/collection.json` into Postman to:
 - [ ] Security testing
 
 ## 👤 Author
-**Your Name**  
+**Shriya Dwivedi**  
 Customer Engineer Aspirant | QA Automation | API Testing
 
 ## 📄 License
