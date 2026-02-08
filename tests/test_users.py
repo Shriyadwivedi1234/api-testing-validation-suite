@@ -1,80 +1,73 @@
 import requests
 
-BASE_URL = "https://reqres.in/api"
+BASE_URL = "https://jsonplaceholder.typicode.com"
 
 
-def test_get_users():
-    """Test fetching list of users"""
-    response = requests.get(f"{BASE_URL}/users?page=2")
-
+def test_get_all_users():
+    """Test fetching all users"""
+    response = requests.get(f"{BASE_URL}/users")
+    
     data = response.json()
-
+    
     assert response.status_code == 200
-    assert len(data["data"]) > 0
-    assert "page" in data
-    assert data["page"] == 2
-    print("✅ Get Users Test Passed")
+    assert len(data) == 10
+    assert isinstance(data, list)
+    print("✅ Get All Users Test Passed")
 
 
 def test_get_single_user():
     """Test fetching single user"""
-    response = requests.get(f"{BASE_URL}/users/2")
-
+    response = requests.get(f"{BASE_URL}/users/1")
+    
     data = response.json()
-
+    
     assert response.status_code == 200
-    assert data["data"]["id"] == 2
-    assert "email" in data["data"]
+    assert data["id"] == 1
+    assert "name" in data
+    assert "email" in data
     print("✅ Get Single User Test Passed")
 
 
-def test_get_user_not_found():
-    """Test user not found error"""
-    response = requests.get(f"{BASE_URL}/users/999")
-
-    assert response.status_code == 404
-    print("✅ User Not Found Test Passed")
-
-
-def test_create_user():
-    """Test creating a new user"""
-    payload = {
-        "name": "John Doe",
-        "job": "QA Engineer"
-    }
-
-    response = requests.post(f"{BASE_URL}/users", json=payload)
-
+def test_get_user_posts():
+    """Test fetching posts by user"""
+    response = requests.get(f"{BASE_URL}/posts?userId=1")
+    
     data = response.json()
-
-    assert response.status_code == 201
-    assert data["name"] == "John Doe"
-    assert data["job"] == "QA Engineer"
-    assert "id" in data
-    assert "createdAt" in data
-    print("✅ Create User Test Passed")
-
-
-def test_update_user():
-    """Test updating user"""
-    payload = {
-        "name": "Jane Doe",
-        "job": "Senior QA Engineer"
-    }
-
-    response = requests.put(f"{BASE_URL}/users/2", json=payload)
-
-    data = response.json()
-
+    
     assert response.status_code == 200
-    assert data["name"] == "Jane Doe"
-    assert data["job"] == "Senior QA Engineer"
-    print("✅ Update User Test Passed")
+    assert len(data) > 0
+    assert all(post["userId"] == 1 for post in data)
+    print("✅ Get User Posts Test Passed")
 
 
-def test_delete_user():
-    """Test deleting user"""
-    response = requests.delete(f"{BASE_URL}/users/2")
+def test_get_comments():
+    """Test fetching comments"""
+    response = requests.get(f"{BASE_URL}/comments?postId=1")
+    
+    data = response.json()
+    
+    assert response.status_code == 200
+    assert len(data) > 0
+    assert "email" in data[0]
+    assert "body" in data[0]
+    print("✅ Get Comments Test Passed")
 
-    assert response.status_code == 204
-    print("✅ Delete User Test Passed")
+
+def test_delete_post():
+    """Test deleting a post"""
+    response = requests.delete(f"{BASE_URL}/posts/1")
+    
+    assert response.status_code == 200
+    print("✅ Delete Post Test Passed")
+
+
+def test_get_todos():
+    """Test fetching todos"""
+    response = requests.get(f"{BASE_URL}/todos?userId=1")
+    
+    data = response.json()
+    
+    assert response.status_code == 200
+    assert len(data) > 0
+    assert "completed" in data[0]
+    print("✅ Get Todos Test Passed")

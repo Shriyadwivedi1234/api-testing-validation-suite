@@ -12,16 +12,18 @@ Test real-world REST APIs to validate:
 - Response validation (status codes, data structure, tokens)
 
 ## 🌐 APIs Tested
-**Base URL:** https://reqres.in/api
+**Base URL:** https://jsonplaceholder.typicode.com
 
 ### Endpoints Covered:
-- `POST /register` - User registration
-- `POST /login` - User authentication
-- `GET /users` - Fetch user list
+- `GET /posts` - Fetch all posts
+- `GET /posts/{id}` - Fetch single post
+- `POST /posts` - Create new post
+- `PUT /posts/{id}` - Update post
+- `DELETE /posts/{id}` - Delete post
+- `GET /users` - Fetch all users
 - `GET /users/{id}` - Fetch single user
-- `POST /users` - Create new user
-- `PUT /users/{id}` - Update user
-- `DELETE /users/{id}` - Delete user
+- `GET /comments` - Fetch comments
+- `GET /todos` - Fetch todos
 
 ## 🛠️ Tech Stack
 - **Python 3.x** - Programming language

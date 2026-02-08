@@ -1,58 +1,64 @@
 import requests
 
-BASE_URL = "https://reqres.in/api"
+BASE_URL = "https://jsonplaceholder.typicode.com"
 
 
-def test_register_success():
-    """Test successful user registration"""
-    payload = {
-        "email": "eve.holt@reqres.in",
-        "password": "pistol"
-    }
-
-    response = requests.post(f"{BASE_URL}/register", json=payload)
-
+def test_get_all_posts():
+    """Test fetching all posts"""
+    response = requests.get(f"{BASE_URL}/posts")
+    
     assert response.status_code == 200
-    assert "token" in response.json()
-    print("✅ Registration Success Test Passed")
+    data = response.json()
+    assert len(data) > 0
+    assert isinstance(data, list)
+    print("✅ Get All Posts Test Passed")
 
 
-def test_register_failure():
-    """Test registration failure with missing password"""
-    payload = {
-        "email": "test@test.com"
-        # Missing password
-    }
-
-    response = requests.post(f"{BASE_URL}/register", json=payload)
-
-    assert response.status_code == 400
-    assert "error" in response.json()
-    print("✅ Registration Failure Test Passed")
-
-
-def test_login_success():
-    """Test successful login"""
-    payload = {
-        "email": "eve.holt@reqres.in",
-        "password": "cityslicka"
-    }
-
-    response = requests.post(f"{BASE_URL}/login", json=payload)
-
+def test_get_single_post():
+    """Test fetching single post"""
+    response = requests.get(f"{BASE_URL}/posts/1")
+    
+    data = response.json()
+    
     assert response.status_code == 200
-    assert "token" in response.json()
-    print("✅ Login Success Test Passed")
+    assert data["id"] == 1
+    assert "title" in data
+    assert "body" in data
+    print("✅ Get Single Post Test Passed")
 
 
-def test_login_failure():
-    """Test login failure with missing password"""
+def test_create_post():
+    """Test creating a new post"""
     payload = {
-        "email": "peter@klaven"
+        "title": "Test Post",
+        "body": "This is a test post for API validation",
+        "userId": 1
     }
+    
+    response = requests.post(f"{BASE_URL}/posts", json=payload)
+    
+    data = response.json()
+    
+    assert response.status_code == 201
+    assert data["title"] == "Test Post"
+    assert data["body"] == "This is a test post for API validation"
+    assert data["userId"] == 1
+    print("✅ Create Post Test Passed")
 
-    response = requests.post(f"{BASE_URL}/login", json=payload)
 
-    assert response.status_code == 400
-    assert "error" in response.json()
-    print("✅ Login Failure Test Passed")
+def test_update_post():
+    """Test updating a post"""
+    payload = {
+        "id": 1,
+        "title": "Updated Post",
+        "body": "This post has been updated",
+        "userId": 1
+    }
+    
+    response = requests.put(f"{BASE_URL}/posts/1", json=payload)
+    
+    data = response.json()
+    
+    assert response.status_code == 200
+    assert data["title"] == "Updated Post"
+    print("✅ Update Post Test Passed")

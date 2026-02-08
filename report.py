@@ -8,7 +8,7 @@ def run_tests():
     
     print("=" * 60)
     print("🚀 API TESTING & VALIDATION SUITE")
-    print("=" * 60)
+    print(f"🌐 Base URL: https://jsonplaceholder.typicode.com")
     print(f"📅 Test Run Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"🌐 Base URL: https://reqres.in/api")
     print("=" * 60)
